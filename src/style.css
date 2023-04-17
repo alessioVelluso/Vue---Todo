@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+/* font-family: 'Montserrat', sans-serif; */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
+/* font-family: 'Comfortaa', cursive; */
+@font-face {
+  font-family: AdobeLight;
+  src: url(./fonts/adobelight.ttf);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root { font-size: 16px; }
+body { font-family: 'Comfortaa', cursive;}
+
+
+
+h1 { font-family: 'AdobeLight'; font-size: 4rem;}
+p { font-size: 1.2rem;}
+
+
+
+
+@media(max-width: 1015px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+
+@media(max-width: 380px) {
+  :root { font-size: 12px;}
+}
