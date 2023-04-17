@@ -1,5 +1,6 @@
 <script lang="ts">
-import { ref, getCurrentInstance, ComponentInternalInstance, reactive} from 'vue';
+import { ref, getCurrentInstance, ComponentInternalInstance, reactive, computed } from 'vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 import { VForm } from 'vuetify/components/VForm';
 import { ValidationRule } from 'vuetify/components/VTextField'
 
@@ -10,6 +11,7 @@ import { useAddEditTodoStore } from '../stores/addEditCardsStore'
 export default {
     props: { isWindowOpen: Boolean},
     setup() {
+        const { thresholds, width } = useDisplay()
         const todosStore = useTodosStore()
         const addEditTodoStore = useAddEditTodoStore()
 
@@ -17,9 +19,16 @@ export default {
             (v: any) => !!v || "Field can't be empty"
         ]
 
+        const isMdAndDown = computed(()=> {
+            if (width.value.valueOf() < thresholds.value.md.valueOf()) return true
+            else return false
+        })
+
+
+
         const isColorPickerOpen = ref(false)
 
-        return { todosStore, addEditTodoStore, validationRules, isColorPickerOpen }
+        return { todosStore, addEditTodoStore, validationRules, isColorPickerOpen, isMdAndDown }
     },
     methods: {
         addTodo(title: string, category: string, text: string, color: string) {
@@ -43,26 +52,32 @@ export default {
 <template>
     <v-form ref="addTodoForm" @click.outside="isColorPickerOpen = false">
         <v-container>
-            <v-row no-gutters style="margin-bottom: 2rem;">
-                <v-col>
-                    <h2>Aggiungi Todo</h2>
-                </v-col>
+            <v-row>
+                <v-spacer></v-spacer>
                 <v-col xs="1" align-self="end" style="text-align: end;">
                     <v-btn icon  @click="closeWindow()">
                         <v-icon>mdi-arrow-left</v-icon>
                     </v-btn>
                 </v-col>
             </v-row>
+            <v-row no-gutters style="margin-bottom: 3rem; grid-row: 2/4;" >
+                <v-col>
+                    <h2>Aggiungi Todo</h2>
+                </v-col>
+            </v-row>
 
+            <v-row>
+                <v-spacer></v-spacer>
+            </v-row>
 
-            <v-row no-gutters>
+            <v-row no-gutters class="with-margins">
                 <v-text-field variant="outlined" hide-details
                 label="Title" v-model="addEditTodoStore.title" :rules="validationRules"
                 >
                 </v-text-field>
             </v-row>
             
-            <v-row no-gutters>
+            <v-row no-gutters class="with-margins">
                 <v-col style="flex-grow:0;" xs="1">
                     <v-menu v-model="isColorPickerOpen">
                         <template v-slot:activator="{ props }">
@@ -87,14 +102,14 @@ export default {
                 </v-col>
             </v-row>
             
-            <v-row no-gutters>
+            <v-row no-gutters class="with-margins">
                 <v-textarea variant="outlined" hide-details
                 label="Text" v-model="addEditTodoStore.text" :rules="validationRules"
                 >
                 </v-textarea>
             </v-row>
 
-            <v-row no-gutters>
+            <v-row no-gutters >
                 <v-spacer></v-spacer>
                 <v-col xs="2" style="text-align: end;">
                     <v-btn color="primary"
@@ -113,13 +128,17 @@ export default {
 </template>
 
 <style scoped lang="scss">
+.v-form {
+    width: 100%;
+    height: 100%;
+}
 .v-container {
-   
+    height: 100%;
     padding: 3rem;
 
     background-color: black;
     .v-row {
-        margin-bottom: 1rem;
+        &.with-margins { margin-bottom: 2rem; }
         #colorButton {
             height: 100%;
             width: 100%;

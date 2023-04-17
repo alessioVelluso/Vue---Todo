@@ -34,9 +34,4 @@ export default {
     background-color: rgb(var(--v-theme-secondary));
 }
 
-.v-overlay {
-    height: 90%;
-    width: 90%;
-}
-
 </style>

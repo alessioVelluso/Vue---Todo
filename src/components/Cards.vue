@@ -135,4 +135,9 @@ export default {
         }
     }
 }
+
+
+.v-overlay__content {
+    margin: 0;
+}
 </style>
